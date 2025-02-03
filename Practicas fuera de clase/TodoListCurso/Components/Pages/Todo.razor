@@ -1,0 +1,64 @@
+﻿@page "/Todo"
+@rendermode InteractiveServer
+
+<PageTitle>Todo</PageTitle>
+<h3>Todo</h3>
+
+<h2 class="badge bg-primary position-relative">
+	task 
+	<span class="position-absolute top-0 start-110 translate-middle badge rounded-pill bg-danger">
+		@todos.Count(todo => todo.IsDone)
+	</span>
+
+</h2>
+
+<ul style="list-style-type:none"> 
+    @foreach (var todo in todos)
+	{
+		<li> 
+			<label>
+				<input type="checkbox" @bind="@todo.IsDone" />
+				@todo.Title
+			</label>
+			<button
+				class="btn btn-outline-danger btn-sm"
+				@onclick="()=> RemoveTodo(todo)"			
+			>
+				<i class="bi bi-trash" style="font-size:0.7rem;"></i>
+
+			</button>
+ 		</li>
+ 
+	}
+
+</ul>
+
+<input placeholder="Task Name" @bind="newTodo" />
+<button @onclick="AddTodo">Add Task</button>
+
+@code {
+
+	private String? newTodo;
+
+	private void AddTodo()
+	{
+		if (!String.IsNullOrWhiteSpace(newTodo))
+		{
+			todos.Add(new TodoItem { Title = newTodo });
+			newTodo = string.Empty;
+		}
+	}
+
+	private List<TodoItem> todos = new List<TodoItem>()
+	{
+		new TodoItem { Title = "Leer la Biblia", IsDone = false },
+		new TodoItem { Title = "Conseguir trabajo", IsDone = false },
+		new TodoItem { Title = "Apreder a hacer un proyecto", IsDone = true },
+
+	};
+
+	private void RemoveTodo(TodoItem todo)
+	{
+		todos.Remove(todo);
+	}
+}
