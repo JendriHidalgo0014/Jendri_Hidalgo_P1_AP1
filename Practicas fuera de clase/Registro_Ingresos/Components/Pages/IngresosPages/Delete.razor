@@ -1,0 +1,77 @@
+﻿@page "/Ingresos/Delete/{IngresoId:int}"
+@using Registro_Ingresos.Models
+@using Registro_Ingresos.Services
+@inject IngresosService ingresosService
+@inject NavigationManager navigation
+@rendermode InteractiveServer
+
+<PageTitle>Confirmar eliminaci&oacute;n</PageTitle>
+
+<EditForm Model="ingresoSeleccionado" OnValidSubmit="ConfirmarEliminacion">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="container">
+        <div class="card shadow-lg">
+
+            <!-- Encabezado -->
+            <div class="card-header bg-danger text-white">
+                <h4 class="bi bi-trash"> Eliminar Ingreso</h4>
+            </div>
+
+            <div class="card-body">
+                <article class="contenido">
+                    <p class="texto-destacado">¿Deseas proceder con la eliminaci&oacute; de este Ticket?</p>
+                    <div class="detalle">
+                        <span><strong>ID: </strong>@ingresoSeleccionado.IngresoId</span>
+                    </div>
+                    <div class="detalle">
+                        <span><strong>Fecha: </strong>@ingresoSeleccionado.Fecha</span>
+                    </div>
+                    <div class="detalle">
+                        <span><strong>Concepto: </strong>@ingresoSeleccionado.Concepto</span>
+                    </div>
+                    <div class="detalle">
+                        <span><strong>Monto: </strong>@ingresoSeleccionado.Monto</span>
+                    </div>
+
+                </article>
+
+                <!-- Pie -->
+                <footer class="pie text-center">
+                    <a href="/Ingresos/Index" class="btn btn-info bi bi-arrow-left"> Regresar</a>
+                    <button type="button" class="btn btn-danger  bi bi-trash" @onclick="async () => await ConfirmarEliminacion()">Eliminar</button>
+                </footer>
+
+            </div>
+
+        </div>
+
+    </div>
+
+</EditForm>
+@code {
+		[Parameter]
+		public int IngresoId { get; set; }
+	public Ingresos ingresoSeleccionado { get; set; } = new Ingresos();
+	public List<Ingresos> Ingresos { get; set; } = new List<Ingresos>();
+
+	protected override async Task OnInitializedAsync()
+	{
+		if (IngresoId > 0)
+		{
+			ingresoSeleccionado = await ingresosService.Buscar(IngresoId);
+		}
+	}
+
+	public async Task ConfirmarEliminacion()
+	{
+		if (ingresoSeleccionado != null)
+		{
+			var resultado = await ingresosService.Eliminar(IngresoId);
+			if (resultado)
+			{
+				navigation.NavigateTo("/Ingresos/Index");
+			}
+		}
+	}
+}

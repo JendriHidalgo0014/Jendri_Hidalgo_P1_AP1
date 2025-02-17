@@ -1,0 +1,128 @@
+﻿@page "/Ingresos/Index"
+@using Registro_Ingresos.Models
+@using Registro_Ingresos.Services
+@inject IngresosService ingresosService
+@inject NavigationManager navigation
+@rendermode InteractiveServer
+
+<PageTitle>Ingresos</PageTitle>
+<div class="container">
+    <div class="card shadow-lg">
+        <div class="card-header bg-warning text-dark">
+            <h3 class="bi bi-person-fill"><strong> Registro de Ingresos</strong></h3>
+        </div>
+        <div class="row text-left">
+            <div class="col-md-3">
+                <label for="filtro" class="form-label"><strong>Filtrar por:</strong></label>
+                <InputSelect id="filtro" class="form-select" @bind-Value="filtro">
+                    <option value="id">ID</option>
+                    <option value="Concepto">Concepto</option>
+                    <option value="Monto">Monto</option>
+                </InputSelect>
+            </div>
+            <div class="col-md-6">
+                <label for="valorFiltro" class="form-label"><strong>B&uacute;squeda:</strong></label>
+                <div class="input-group">
+                    <InputText id="valorFiltro" @bind-Value="valorFiltro" class="form-control" placeholder="Buscar" />
+                    <button @onclick="Buscar" class="btn btn-warning bi bi-search" type="button"> Buscar</button>
+                </div>
+            </div>
+
+
+            <div class="col-md-3 d-flex align-items-center justify-content-end">
+                <a href="/Ingresos/Create" class="btn btn-warning btn-sm d-flex align-items-center px-3 py-2">
+                    <i class="bi bi-plus-square-fill me-1"></i> Crear
+                </a>
+            </div>
+
+
+            <div class="col-1">
+                <button type="button" class="btn btn-outline-secondary bi bi-arrow-counterclockwise"
+                        @onclick="Restablecer">
+                </button>
+            </div>
+
+
+            <div class="card-body">
+                <table class="table table-light">
+                    <thead class="table table-striped text-center table-bordered mt-3 bg-dark text-white">
+                        <tr>
+                            <th>ID</th>
+                            <th>Fecha</th>
+                            <th>Concepto</th>
+                            <th>Monto</th>
+                            <th>Modificar</th>
+                            <th>Eliminar</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var Ingresos in Ingresos)
+                        {
+
+                            <tr>
+                                <td class="text-center">@Ingresos.IngresoId</td>
+                                <td class="text-center">@Ingresos.Fecha.ToString("dd/MM/yyyy")</td>
+                                <td class="text-center">@Ingresos.Concepto</td>
+                                <td class="text-center">@Ingresos.Monto.ToString("C")</td>
+
+
+                                <td class="text-center">
+                                    <a href="/Ingresos/Edit/@Ingresos.IngresoId" class="btn btn-secondary text-white bi bi-pencil-fill"></a>
+                                </td>
+                                <td class="text-center">
+                                    <a href="/Ingresos/Delete/@Ingresos.IngresoId" class="btn btn-danger bi bi-trash2-fill"></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="card-footer space-between">
+            <label><strong>Cantidad: @Ingresos.Count()</strong></label>
+            <label><strong>Total: @Ingresos.Sum(c => c.Monto)</strong</label>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@code {
+    public List<Ingresos> Ingresos = new List<Ingresos>();
+    private string filtro = "id";  // Establece un valor por defecto
+    private string valorFiltro = "";
+
+    protected override async Task OnInitializedAsync()
+    {
+        Ingresos = await ingresosService.Listar(c => true);
+    }
+
+    private async Task Buscar()
+    {
+        if (!string.IsNullOrWhiteSpace(valorFiltro))
+        {
+            string filtroLower = filtro.ToLower();
+            string valorFiltroLower = valorFiltro.ToLower();
+
+            decimal.TryParse(valorFiltro, out decimal montoBuscado);
+
+            Ingresos = await ingresosService.Listar(t =>
+                (filtroLower == "id" && t.IngresoId.ToString().Contains(valorFiltro)) ||
+                (filtroLower == "concepto" && t.Concepto.Contains(valorFiltroLower)) ||
+                 (filtroLower == "monto" && t.Monto.ToString().Contains(valorFiltro))
+            );
+        }
+        else
+        {
+            Ingresos = await ingresosService.Listar(t => true);
+        }
+    }
+
+    private async Task Restablecer()
+    {
+        Ingresos = await ingresosService.Listar(p => true);
+        filtro = "id";  // Restaura el valor por defecto
+        valorFiltro = "";
+    }
+}
+

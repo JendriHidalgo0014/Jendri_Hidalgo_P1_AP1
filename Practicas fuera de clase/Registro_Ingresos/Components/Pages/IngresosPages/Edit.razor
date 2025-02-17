@@ -1,0 +1,113 @@
+﻿@page "/Ingresos/Edit/{IngresoId:int}"
+@using Registro_Ingresos.Models
+@using Registro_Ingresos.Services
+@inject IngresosService ingresosService
+@inject NavigationManager navigation
+@rendermode InteractiveServer
+
+<PageTitle>Modificar Ingreso</PageTitle>
+<EditForm Model="ingresoModificado" OnValidSubmit="ModificarIngreso">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow">
+            <div class="card-header text-center bg-danger text-white">
+                <h4>Modificar Ingreso</h4>
+            </div>
+
+            <div class="card-body">
+
+                <!-- Campo: IngresoId -->
+                <div class="form-group">
+                    <label for="IngresoId"><strong>ID del Ingreso</strong></label>
+                    <InputNumber id="IngresoId" class="form-control" @bind-Value="ingresoModificado.IngresoId" readonly />
+                    <ValidationMessage For="@(() => ingresoModificado.IngresoId)" />
+                </div>
+
+                <!-- Campo: Fecha -->
+                <div class="form-group">
+                    <label for="fecha"><strong>Fecha del Ticket</strong></label>
+                    <InputDate id="fecha" class="form-control" @bind-Value="ingresoModificado.Fecha" />
+                    <ValidationMessage For="@(() => ingresoModificado.Fecha)" />
+                </div>
+
+                <!-- Campo: Concepto -->
+                <div class="form-group">
+                    <label for="Concepto"><strong>Concepto del Ingreso</strong></label>
+                    <InputText id="Concepto" class="form-control" @bind-Value="ingresoModificado.Concepto" />
+                    <ValidationMessage For="@(() => ingresoModificado.Concepto)" />
+                </div>
+
+                <!-- Campo: Monto -->
+                <div class="form-group">
+                    <label for="Monto"><strong>Monto</strong></label>
+                    <InputNumber id="Monto" class="form-control" @bind-Value="ingresoModificado.Monto" />
+                    <ValidationMessage For="@(() => ingresoModificado.Monto)" />
+                </div>
+
+
+
+            </div>
+
+            <div class="card-footer text-center">
+                <a href="/Ingresos/Index" class="btn btn-danger ml-2">Volver</a>
+                <button type="submit" class="btn btn-success ml-2">Modificar</button>
+            </div>
+
+        </div>
+
+    </div>
+
+</EditForm>
+@code {
+    [Parameter]
+    public int IngresoId { get; set; }
+    public Ingresos ingresoModificado { get; set; } = new Ingresos();
+    public List<Ingresos> Ingresos { get; set; } = new List<Ingresos>();
+    private DateTime? Fecha { get; set; }
+
+    protected override async Task OnInitializedAsync()
+    {
+        if (IngresoId > 0)
+        {
+            ingresoModificado = await ingresosService.Buscar(IngresoId);
+
+        }
+
+
+    }
+
+    private string FechaString
+    {
+        get => Fecha?.ToString("yyyy-MM-dd") ?? string.Empty;
+        set
+        {
+            if (DateTime.TryParse(value, out var parsedDate))
+            {
+                Fecha = parsedDate;
+            }
+            else
+            {
+                Fecha = null;
+            }
+        }
+    }
+
+
+    public async Task<bool> Validar()
+    {
+        var existeIngreso = await ingresosService.BuscarConcepto(ingresoModificado.Concepto);
+
+        return existeIngreso != null;
+    }
+
+
+    public async Task ModificarIngreso()
+    {
+        if (!await Validar())
+        {
+            await ingresosService.Guardar(ingresoModificado);
+            navigation.NavigateTo("/Ingresos/Index");
+
+        }
+    }
+}
