@@ -3,32 +3,35 @@
 @inject NavigationManager navigation;
 
 <PageTitle>Eliminar Aporte</PageTitle>
-<EditForm Model="SistemaSeleccionado" OnValidSubmit="ConfirmarEliminacion">
+<EditForm Model="AporteSeleccionado" OnValidSubmit="ConfirmarEliminacion">
     <DataAnnotationsValidator />
     <ValidationSummary />
     <div class="container">
         <div class="card shadow-lg">
             <!-- Encabezado -->
             <div class="card-header bg-danger text-white">
-                <h4 class="bi bi-trash"> Eliminar sistema</h4>
+                <h4 class="bi bi-trash"> Eliminar Aporte</h4>
             </div>
 
             <div class="card-body">
                 <article class="contenido">
-                    <p class="texto-destacado">¿Deseas proceder con la eliminaci&oacute; de este t&eacute;cnico?</p>
+                    <p class="texto-destacado">¿Deseas proceder con la eliminaci&oacute; de este Aporte?</p>
                     <div class="detalle">
-                        <span><strong>ID: </strong>@SistemaSeleccionado.SistemaId</span>
+                        <span><strong>ID: </strong>@AporteSeleccionado.AporteId</span>
                     </div>
                     <div class="detalle">
-                        <span><strong>Descripcion: </strong>@SistemaSeleccionado.Descripcion</span>
+                        <span><strong>Persona: </strong>@AporteSeleccionado.Personas</span>
                     </div>
                     <div class="detalle">
-                        <span><strong>Complejidad: </strong>@SistemaSeleccionado.Complejidad</span>
+                        <span><strong>Observacion: </strong>@AporteSeleccionado.Observacion</span>
+                    </div>
+                    <div class="detalle">
+                        <span><strong>Monto: </strong>@AporteSeleccionado.Monto</span>
                     </div>
                 </article>
                 <!-- Pie -->
                 <footer class="pie text-center">
-                    <a href="/Sistemas/Index" class="btn btn-info bi bi-arrow-left"> Regresar</a>
+                    <a href="/Aportes/Index" class="btn btn-info bi bi-arrow-left"> Regresar</a>
                     <button type="button" class="btn btn-danger  bi bi-trash" @onclick="ConfirmarEliminacion">Eliminar</button>
                 </footer>
             </div>

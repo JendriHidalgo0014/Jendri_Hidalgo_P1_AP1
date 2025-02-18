@@ -1,17 +1,9 @@
 ﻿@page "/Aportes/Edit/{AporteId:int"
-@using Jendri_Hidalgo_P1_AP1.Models
-@using Jendri_Hidalgo_P1_AP1.Services
 @inject AportesService aportesService;
 @inject NavigationManager navigation;
 
-@page "/Sistemas/Edit/{SistemaId:int}"
-@inject ToastService Toast
-@inject SistemasService sistemasService
-@inject NavigationManager navigation
-@rendermode InteractiveServer
-
 <PageTitle>Editar Aporte</PageTitle>
-<EditForm Model="porteModificado" OnValidSubmit="ModificarAporte">
+<EditForm Model="aporteModificado" OnValidSubmit="ModificarAporte">
     <DataAnnotationsValidator />
     <div class="container">
         <div class="card shadow">
