@@ -4,8 +4,84 @@
 @inject AportesService aportesService;
 @inject NavigationManager navigation;
 
-<h3>Index</h3>
+<PageTitle>Aportes</PageTitle>
+<div class="container">
+    <div class="card shadow-lg">
+        <div class="card-header bg-warning text-dark">
+            <h3 class="bi bi-person-fill"><strong> Consulta de Aportes</strong></h3>
+        </div>
+        <div class="row text-left">
+            <div class="col-md-3">
+                <label for="filtro" class="form-label"><strong>Filtrar por:</strong></label>
+                <InputSelect id="filtro" class="form-select" @bind-Value="filtro">
+                    <option value="id">ID</option>
+                    <option value="Personas">Personas</option>
+                    <option value="Obsevacion">Observacion</option>
+                </InputSelect>
+            </div>
+            <div class="col-md-6">
+                <label for="valorFiltro" class="form-label"><strong>B&uacute;squeda:</strong></label>
+                <div class="input-group">
+                    <InputText id="valorFiltro" @bind-Value="valorFiltro" class="form-control" placeholder="Buscar" />
+                    <button @onclick="Buscar" class="btn btn-warning bi bi-search" type="button"> Buscar</button>
+                </div>
+            </div>
 
+
+            <div class="col-md-3 d-flex align-items-center justify-content-end">
+                <a href="/Aportes/Create" class="btn btn-warning btn-sm d-flex align-items-center px-3 py-2">
+                    <i class="bi bi-plus-square-fill me-1"></i> Crear
+                </a>
+            </div>
+
+
+            <div class="col-1">
+                <button type="button" class="btn btn-outline-secondary bi bi-arrow-counterclockwise"
+                        @onclick="Restablecer">
+                </button>
+            </div>
+
+
+            <div class="card-body">
+                <table class="table table-light">
+                    <thead class="table table-striped text-center table-bordered mt-3 bg-dark text-white">
+                        <tr>
+                            <th>ID</th>
+                            <th>Personas</th>
+                            <th>Observacion</th>
+                            <th>Monto</th>
+                            <th>Modificar</th>
+                            <th>Eliminar</th>
+
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach (var Aportes in Aportes)
+                        {
+                            <tr>
+                                <td class="text-center">@Aportes.AporteId</td>
+                                <td class="text-center">@Aportes.Personas</td>
+                                <td class="text-center">@Aportes.Observacion</td>
+                                <td class="text-center">@Aportes.Monto</td>
+
+                                <td class="text-center">
+                                    <a href="/Aportes/Edit/@Aportes.AporteId" class="btn btn-secondary text-white bi bi-pencil-fill"></a>
+                                </td>
+                                <td class="text-center">
+                                    <a href="/Aportes/Delete/@Aportes.AporteId" class="btn btn-danger bi bi-trash2-fill"></a>
+                                </td>
+                            </tr>
+                        }
+                    </tbody>
+                </table>
+                <div class="card-footer space-between">
+            <label><strong>Cantidad: @Aportes.Count()</strong></label>
+            <label><strong>Total: @Aportes.Sum(c => c.Monto)</strong</label>
+        </div>
+            </div>
+        </div>
+    </div>
+</div>
 @code {
     public List<Aportes> Aportes = new List<Aportes>();
     private string filtro = "";

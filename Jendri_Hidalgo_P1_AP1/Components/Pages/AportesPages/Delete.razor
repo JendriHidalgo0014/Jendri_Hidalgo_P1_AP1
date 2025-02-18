@@ -2,8 +2,39 @@
 @inject AportesService aportesService;
 @inject NavigationManager navigation;
 
+<PageTitle>Eliminar Aporte</PageTitle>
+<EditForm Model="SistemaSeleccionado" OnValidSubmit="ConfirmarEliminacion">
+    <DataAnnotationsValidator />
+    <ValidationSummary />
+    <div class="container">
+        <div class="card shadow-lg">
+            <!-- Encabezado -->
+            <div class="card-header bg-danger text-white">
+                <h4 class="bi bi-trash"> Eliminar sistema</h4>
+            </div>
 
-<h3>Delete</h3>
+            <div class="card-body">
+                <article class="contenido">
+                    <p class="texto-destacado">¿Deseas proceder con la eliminaci&oacute; de este t&eacute;cnico?</p>
+                    <div class="detalle">
+                        <span><strong>ID: </strong>@SistemaSeleccionado.SistemaId</span>
+                    </div>
+                    <div class="detalle">
+                        <span><strong>Descripcion: </strong>@SistemaSeleccionado.Descripcion</span>
+                    </div>
+                    <div class="detalle">
+                        <span><strong>Complejidad: </strong>@SistemaSeleccionado.Complejidad</span>
+                    </div>
+                </article>
+                <!-- Pie -->
+                <footer class="pie text-center">
+                    <a href="/Sistemas/Index" class="btn btn-info bi bi-arrow-left"> Regresar</a>
+                    <button type="button" class="btn btn-danger  bi bi-trash" @onclick="ConfirmarEliminacion">Eliminar</button>
+                </footer>
+            </div>
+        </div>
+    </div>
+</EditForm>
 
 @code {
     [Parameter]

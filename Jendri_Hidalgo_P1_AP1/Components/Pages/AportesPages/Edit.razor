@@ -4,6 +4,58 @@
 @inject AportesService aportesService;
 @inject NavigationManager navigation;
 
+@page "/Sistemas/Edit/{SistemaId:int}"
+@inject ToastService Toast
+@inject SistemasService sistemasService
+@inject NavigationManager navigation
+@rendermode InteractiveServer
+
+<PageTitle>Editar Aporte</PageTitle>
+<EditForm Model="porteModificado" OnValidSubmit="ModificarAporte">
+    <DataAnnotationsValidator />
+    <div class="container">
+        <div class="card shadow">
+            <div class="card-header text-center bg-danger text-white">
+                <h4>Editar Aporte</h4>
+            </div>
+
+            <div class="card-body">
+                <!-- Campo: AporteId -->
+                <div class="form-group">
+                    <label for="AporteId"><strong>ID del Aporte</strong></label>
+                    <InputNumber id="AporteId" class="form-control" @bind-Value="aporteModificado.AporteId" readonly />
+                    <ValidationMessage For="@(() => aporteModificado.AporteId)" />
+                </div>
+
+                <!-- Campo: Personas -->
+                <div class="form-group">
+                    <label for="Personas"><strong>Persona</strong></label>
+                    <InputText id="Personas" class="form-control" @bind-Value="aporteModificado.Personas" />
+                    <ValidationMessage For="@(() => aporteModificado.Personas)" />
+                </div>
+
+                <!-- Campo: Observacion -->
+                <div class="form-group">
+                    <label for="Observacion"><strong>Observacion</strong></label>
+                    <InputText id="Observacion" class="form-control" @bind-Value="aporteModificado.Observacion" />
+                    <ValidationMessage For="@(() => aporteModificado.Observacion)" />
+                </div>
+
+                <!-- Campo: Monto -->
+                <div class="form-group">
+                    <label for="Monto"><strong>Monto</strong></label>
+                    <InputNumber id="Monto" class="form-control" @bind-Value="aporteModificado.Monto" />
+                    <ValidationMessage For="@(() => aporteModificado.Monto)" />
+                </div>
+            </div>
+
+            <div class="card-footer text-center">
+                <button type="submit" class="btn btn-success ml-2">Registrar</button>
+                <a href="/Sistemas/Index" class="btn btn-danger ml-2">Volver</a>
+            </div>
+        </div>
+    </div>
+</EditForm>
 
 @code {
     [Parameter]
