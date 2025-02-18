@@ -10,7 +10,7 @@ namespace Jendri_Hidalgo_P1_AP1.Models
 		public int AporteId { get; set; }
 
 		[Required(ErrorMessage = "Este campo es requerido")]
-		public string Persona { get; set; }
+		public string Personas { get; set; }
 
 		[Required(ErrorMessage = "Este campo es requerido")]
 		public string Observacion { get; set; }

@@ -1,5 +1,37 @@
-﻿<h3>Create</h3>
+﻿@page "/Aportes/Create"
+@inject AportesService aportesService;
+@inject NavigationManager navigation;
+
+<h3>Create</h3>
 
 @code {
+    public Aportes nuevoAporte = new Aportes();
+    public List<Aportes> Aportes { get; set; } = new List<Aportes>();
 
+    protected override async Task OnInitializedAsync()
+    {
+        Aportes = await aportesService.Listar(c => c.AporteId > 0);
+    }
+
+    public async Task<bool> Validar()
+    {
+        var personaDuplicada = await aportesService.BuscarPersona(nuevoAporte.Personas);
+        if (personaDuplicada != null)
+        {
+            return false;
+        }
+
+        return true;
+    }
+
+    public async Task GuardarPersona()
+    {
+        if (await Validar())
+        {
+            await aportesService.Guardar(nuevoAporte);
+            nuevoAporte = new Aportes();
+            navigation.NavigateTo("/Aportes/Index");
+        }
+    }
 }
+
