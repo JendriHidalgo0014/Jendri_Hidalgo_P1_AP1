@@ -1,5 +1,33 @@
-﻿<h3>Delete</h3>
+﻿@page "/Aportes/Delete/{AporteId:int"
+@inject AportesService aportesService;
+@inject NavigationManager navigation;
+
+
+<h3>Delete</h3>
 
 @code {
+    [Parameter]
+    public int AporteId { get; set; }
+    public Aportes AporteSeleccionado { get; set; } = new Aportes();
 
+    protected override async Task OnInitializedAsync()
+    {
+        if (AporteId > 0)
+        {
+            AporteSeleccionado = await aportesService.Buscar(AporteId);
+        }
+    }
+
+    public async Task ConfirmarEliminacion()
+    {
+        if (AporteSeleccionado != null)
+        {
+            var resultado = await aportesService.Eliminar(AporteId);
+            if (resultado)
+            {
+                navigation.NavigateTo("/Aportes/Index");
+            }
+
+        }
+    }
 }
