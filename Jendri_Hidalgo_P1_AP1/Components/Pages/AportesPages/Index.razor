@@ -1,6 +1,7 @@
 ﻿@page "/Aportes/Index"
 @inject AportesService aportesService;
 @inject NavigationManager navigation;
+@rendermode InteractiveServer
 
 <PageTitle>Aportes</PageTitle> 
 <div class="container">
@@ -12,9 +13,10 @@
             <div class="col-md-3">
                 <label for="filtro" class="form-label"><strong>Filtrar por:</strong></label>
                 <InputSelect id="filtro" class="form-select" @bind-Value="filtro">
-                    <option value="id">ID</option>
-                    <option value="Personas">Personas</option>
-                    <option value="Obsevacion">Observacion</option>
+                  <option value="id">ID</option>
+                  <option value="personas">Personas</option>
+                  <option value="observacion">Observacion</option>
+                  <option value="monto">Monto</option> 
                 </InputSelect>
             </div>
             <div class="col-md-6">
@@ -72,10 +74,10 @@
                         }
                     </tbody>
                 </table>
-                <div class="card-footer space-between">
-            <label><strong>Cantidad: @Aportes.Count()</strong></label>
-            <label><strong>Total: @Aportes.Sum(c => c.Monto)</strong</label>
-        </div>
+                <div class="card-footer d-flex justify-content-between">
+                  <label><strong>Cantidad: @Aportes.Count()</strong></label>
+                  <label><strong>Total: @Aportes.Sum(c => c.Monto).ToString("N2")</strong</label>
+                </div>
             </div>
         </div>
     </div>
@@ -99,9 +101,9 @@
 
             Aportes = await aportesService.Listar(t =>
                 (filtroLower == "id" && t.AporteId.ToString().Contains(valorFiltro)) ||
-                (filtroLower == "Personas" && t.Personas.ToLower().Contains(valorFiltroLower)) ||
-                (filtroLower == "Observacion" && t.Observacion.ToLower().Contains(valorFiltroLower)) ||
-                (filtroLower == "Monto" && t.Monto.ToString().Contains(valorFiltro))
+                (filtroLower == "personas" && t.Personas.ToLower().Contains(valorFiltroLower)) ||
+                (filtroLower == "observacion" && t.Observacion.ToLower().Contains(valorFiltroLower)) ||
+                (filtroLower == "monto" && t.Monto.ToString().Contains(valorFiltro))
             );
         }
         else
