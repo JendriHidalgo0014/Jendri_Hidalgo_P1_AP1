@@ -9,9 +9,11 @@ namespace Jendri_Hidalgo_P1_AP1.Models
 
 		public int AporteId { get; set; }
 
+		[RegularExpression(@"^[a-zA-Z\s]+$", ErrorMessage = "Este campo solo permite letras")]
 		[Required(ErrorMessage = "Este campo es requerido")]
 		public string Personas { get; set; }
 
+		[RegularExpression(@"^[a-zA-Z0-9áéíóúÁÉÍÓÚüÜñÑ.,\s]+$", ErrorMessage = "Solo se permiten letras, números, espacios y los caracteres .,")]
 		[Required(ErrorMessage = "Este campo es requerido")]
 		public string Observacion { get; set; }
 
