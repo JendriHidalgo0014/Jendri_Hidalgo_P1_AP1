@@ -41,9 +41,11 @@ namespace Jendri_Hidalgo_P1_AP1.Services
 
 		private async Task<bool> Modificar(Aportes Aporte)
 		{
-			await using var context = await DbContextFactory.CreateDbContextAsync();
-			context.Update(Aporte);
-			return await context.SaveChangesAsync() > 0;
+			await using var _context = await DbContextFactory.CreateDbContextAsync();
+			var local = _context.Aportes.Local
+				.FirstOrDefault(i => i.AporteId == Aporte.AporteId);
+			_context.Entry(Aporte).State = EntityState.Modified;
+			return await _context.SaveChangesAsync() > 0;
 		}
 
 		public async Task<Aportes?> Buscar(int IngresoId)
