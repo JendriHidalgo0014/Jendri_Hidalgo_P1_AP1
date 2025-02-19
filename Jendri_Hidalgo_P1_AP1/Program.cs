@@ -3,6 +3,8 @@ using Jendri_Hidalgo_P1_AP1.DAL;
 using Jendri_Hidalgo_P1_AP1.Services;
 using Jendri_Hidalgo_P1_AP1.Models;
 using Microsoft.EntityFrameworkCore;
+using BlazorBootstrap;
+
 
 var builder = WebApplication.CreateBuilder(args);
 
