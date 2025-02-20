@@ -20,5 +20,8 @@ namespace Jendri_Hidalgo_P1_AP1.Models
 		[Required(ErrorMessage = "Este campo es requerido")]
 		public decimal Monto { get; set; }
 
+		[Required(ErrorMessage = "Este campo es requerido")]
+		public DateTime Fecha { get; set; } = DateTime.Now.Date;
+
 	}
 }
