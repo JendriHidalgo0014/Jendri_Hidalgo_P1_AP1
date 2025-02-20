@@ -17,6 +17,7 @@
                   <option value="personas">Personas</option>
                   <option value="observacion">Observacion</option>
                   <option value="monto">Monto</option> 
+                  <option value="fecha">Fecha</option> 
                 </InputSelect>
             </div>
             <div class="col-md-6">
@@ -26,7 +27,6 @@
                     <button @onclick="Buscar" class="btn btn-warning bi bi-search" type="button"> Buscar</button>
                 </div>
             </div>
-
 
             <div class="col-md-3 d-flex align-items-center justify-content-end">
                 <a href="/Aportes/Create" class="btn btn-warning btn-sm d-flex align-items-center px-3 py-2">
@@ -41,6 +41,25 @@
                 </button>
             </div>
 
+
+                <!-- Filtro Fecha -->
+            <div class="row mt-3">
+
+                    @*Desde*@
+                    <div class="col-3">
+                        <label class="col-form-label"><strong>Desde</strong></label>
+                        <InputDate class="form-control" @bind-Value="Desde"></InputDate>
+                    </div>
+
+                    @*Hasta*@
+                    <div class="col-3">
+                        <label class="col-form-label"><strong>Hasta</strong></label>
+                        <div class="input-group">
+                            <InputDate class="form-control" @bind-Value="Hasta"></InputDate>
+                        </div>
+
+                    </div>
+            </div>
 
             <div class="card-body">
                 <table class="table table-light">
@@ -64,6 +83,7 @@
                                 <td class="text-center">@Aportes.Observacion</td>
                                 <td class="text-center">@Aportes.Monto</td>
 
+
                                 <td class="text-center">
                                     <a href="/Aportes/Edit/@Aportes.AporteId" class="btn btn-secondary text-white bi bi-pencil-fill"></a>
                                 </td>
@@ -86,10 +106,16 @@
     public List<Aportes> Aportes = new List<Aportes>();
     private string filtro = "";
     private string valorFiltro = "";
+    public DateTime? Desde { get; set; }
+    public DateTime? Hasta { get; set; }
+
 
     protected override async Task OnInitializedAsync()
     {
         Aportes = await aportesService.Listar(t => true);
+        Desde = null;
+        Hasta = null;
+
     }
 
     private async Task Buscar()
@@ -103,7 +129,7 @@
                 (filtroLower == "id" && t.AporteId.ToString().Contains(valorFiltro)) ||
                 (filtroLower == "personas" && t.Personas.ToLower().Contains(valorFiltroLower)) ||
                 (filtroLower == "observacion" && t.Observacion.ToLower().Contains(valorFiltroLower)) ||
-                (filtroLower == "monto" && t.Monto.ToString().Contains(valorFiltro))
+                (filtroLower == "monto" && t.Monto.ToString().Contains(valorFiltro)) 
             );
         }
         else
