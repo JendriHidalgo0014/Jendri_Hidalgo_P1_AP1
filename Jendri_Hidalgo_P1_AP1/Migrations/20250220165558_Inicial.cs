@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore.Migrations;
+﻿using System;
+using Microsoft.EntityFrameworkCore.Migrations;
 
 #nullable disable
 
@@ -18,7 +19,8 @@ namespace Jendri_Hidalgo_P1_AP1.Migrations
                         .Annotation("SqlServer:Identity", "1, 1"),
                     Personas = table.Column<string>(type: "nvarchar(max)", nullable: false),
                     Observacion = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Monto = table.Column<decimal>(type: "decimal(18,2)", nullable: false)
+                    Monto = table.Column<decimal>(type: "decimal(18,2)", nullable: false),
+                    Fecha = table.Column<DateTime>(type: "datetime2", nullable: false)
                 },
                 constraints: table =>
                 {
