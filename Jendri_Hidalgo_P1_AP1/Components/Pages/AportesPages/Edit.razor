@@ -40,6 +40,7 @@
                     <InputNumber id="Monto" class="form-control" @bind-Value="aporteModificado.Monto" />
                     <ValidationMessage For="@(() => aporteModificado.Monto)" />
                 </div>
+
             </div>
 
             <div class="card-footer text-center">
@@ -81,7 +82,7 @@
 
     public async Task ModificarAporte()
     {
-        if (!await Validar())
+        if (AporteId > 0)
         {
             await aportesService.Guardar(aporteModificado);
 
